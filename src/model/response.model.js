@@ -1,5 +1,5 @@
 class Response {
-  constructor({ errors = [], status = 200, response = {}, successful = true }) {
+  constructor({ errors = [], status = 200, response = {}, successful = true } = {}) {
     this.errors = errors
     this.status = status
     this.response = response

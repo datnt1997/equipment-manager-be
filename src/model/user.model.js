@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 
 class User {
-  constructor({ name, email, password, isAdmin = false }) {
+  constructor({ name, email, password, isAdmin = false } = {}) {
     this.name = name
     this.email = email
     this.password = password

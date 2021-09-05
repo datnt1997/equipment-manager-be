@@ -1,6 +1,6 @@
 const EQUIPMENT_STATUS = require('../constant');
 class Equipment {
-  constructor({ name = '', description = '', status = EQUIPMENT_STATUS.AVAILABLE }) {
+  constructor({ name = '', description = '', status = EQUIPMENT_STATUS.AVAILABLE } = {}) {
     this.name = name,
       this.description = description,
       this.status = status
