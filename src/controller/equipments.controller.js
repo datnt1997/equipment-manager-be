@@ -1,25 +1,13 @@
 const EquipmentsDAO = require('../dao/equipmentsDAO');
 const ResponseModel = require('../model/response.model');
-const UserModel = require('../model/user.model');
 const EquipmentModel = require('../model/equipment.model');
+const getIsAuthorized = require('../utils/authorization');
 
 class EquipmentsController {
   static async createEquipment(req, res) {
     try {
-      try {
-        const userJwt = req.get("Authorization")?.slice("Bearer ".length)
-        const user = await UserModel.decoded(userJwt)
-        var { error, isAdmin } = user
-        if (error || !isAdmin) {
-          let response = new ResponseModel({
-            errors: error ? [error] : ['You do not have permission to do this'],
-            status: 401,
-            successful: false
-          });
-          res.status(401).json(response.toJson())
-          return
-        }
-      } catch (e) {
+      const isAuthorized = await getIsAuthorized(req, true);
+      if (!isAuthorized) {
         let response = new ResponseModel({
           errors: ['Can not authorization'],
           status: 401,
@@ -43,7 +31,7 @@ class EquipmentsController {
         return
       }
 
-      const equipment = new EquipmentModel({...equipmentFromBody});
+      const equipment = new EquipmentModel({ ...equipmentFromBody });
       const insertResult = await EquipmentsDAO.addEquipment(equipment);
       if (!insertResult.success) {
         errors.push(insertResult.error);
@@ -68,6 +56,14 @@ class EquipmentsController {
         successful: false
       });
       res.status(500).json(response.toJson())
+    }
+  }
+  
+  static async bookAEquipment(req, res){
+    try{
+      
+    }catch(e){
+
     }
   }
 }
