@@ -7,6 +7,35 @@ const UserModel = require('../model/user.model');
 const UsersDAO = require('../dao/usersDAO');
 
 class EquipmentsController {
+  static async getAllEquipments(req, res){
+    try{
+      let isAuthorized = await getIsAuthorized(req, true);
+      if (!isAuthorized) {
+        let response = new ResponseModel({
+          errors: ['Can not authorization'],
+          status: 401,
+          successful: false
+        });
+        res.status(401).json(response.toJson());
+        return;
+      }
+      let equipments = await EquipmentsDAO.getEquipments();
+      let response = new ResponseModel({
+        response: { equipments }
+      });
+      res.status(200).json(response.toJson());
+      return;
+    }catch(e){
+      let response = new ResponseModel({
+        errors: [e],
+        status: 500,
+        successful: false
+      });
+      res.status(500).json(response.toJson())
+      return;
+    }
+  }
+
   static async getEquipmentByID(req, res) {
     try {
       if (req?.params?.id) {
