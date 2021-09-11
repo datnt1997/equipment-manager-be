@@ -8,8 +8,8 @@ const equipmentsRoute = require("../src/api/equipments.route");
 const app = express()
 
 app.use(cors())
-// process.env.NODE_ENV !== 'prod' && app.use(morgan('dev'))
-app.use(morgan('combined'))
+process.env.NODE_ENV !== 'prod' && app.use(morgan('dev'))
+// app.use(morgan('combined'))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 

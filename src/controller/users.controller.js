@@ -70,7 +70,7 @@ class UsersController {
     }
   }
 
-  static async login(req, res, next) {
+  static async login(req, res) {
     try {
       const { email, password } = req.body
       if (!email || typeof email !== "string") {
@@ -122,7 +122,7 @@ class UsersController {
 
       let response = new ResponseModel({
         response: {
-          auth_token: user.encoded(), info: user.toJson()
+          authToken: user.encoded(), userInfo: user.toJson()
         }
       });
       res.status(200).json(response.toJson());

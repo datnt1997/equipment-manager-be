@@ -17,8 +17,14 @@ class EquipmentsDAO {
   * Finds equipment by condition in the `equipments` collection
   * @returns {Array} Returns a array
   */
-   static async getEquipments(condition = {}) {
-    return await equipments.find({...condition})
+  static async getEquipments(condition = {}) {
+    let cursor;
+    try {
+      cursor = await equipments.find({ ...condition });
+    } catch (e) {
+      return [];
+    }
+    return cursor.toArray();
   }
 
   /**
@@ -37,7 +43,7 @@ class EquipmentsDAO {
    * @param {EquipmentInfo} equipmentInfo - The information of the equipment to add
    * @returns {DAOResponse} Returns either a "success" or an "error" Object
    */
-  static async addEquipment(equipmentInfo) {
+  static async addAEquipment(equipmentInfo) {
 
     try {
       await equipments.insertOne({ ...equipmentInfo })
@@ -54,7 +60,7 @@ class EquipmentsDAO {
   * @param {EquipmentInfo} equipmentInfo - The information of the equipment to update
   * @returns {DAOResponse} Returns either a "success" or an "error" Object
   */
-  static async updateEquipment(equipmentID, equipmentInfo) {
+  static async updateAEquipment(equipmentID, equipmentInfo) {
     try {
       await equipments.updateOne(
         { _id: ObjectId(equipmentID) },
@@ -62,10 +68,27 @@ class EquipmentsDAO {
       );
       return { success: true }
     } catch (e) {
-      console.error(`Error occurred while update new equipment, ${e}.`)
+      console.error(`Error occurred while update a equipment, ${e}.`)
       return { error: e }
     }
   }
+
+  /**
+  * Delete a equipment to the `equipments` collection
+  * @param {string} equipmentID
+  * @returns {DAOResponse} Returns either a "success" or an "error" Object
+  */
+  static async deleteAEquipment(equipmentID) {
+    try {
+      await equipments.deleteOne({ _id: ObjectId(equipmentID) })
+      return { success: true }
+    } catch (e) {
+      console.error(`Error occurred while delete a equipment, ${e}.`)
+      return { error: e }
+    }
+  }
+
 }
+
 
 module.exports = EquipmentsDAO;
